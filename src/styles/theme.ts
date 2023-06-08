@@ -29,16 +29,13 @@ export const themeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
-      main: '#444C55',
-    },
-    secondary: {
       main: '#F6F7F8',
     },
-    background: {
-      default: '#FAFAFA',
+    secondary: {
+      main: '#9C9EA0',
     },
-    text: {
-      primary: '#FAFAFA',
+    background: {
+      default: '#444C55',
     },
   },
   background: {
