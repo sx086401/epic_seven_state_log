@@ -1,0 +1,11 @@
+{
+  "app": {
+    "title": "第七史詩面板管理器",
+    "login": {
+      "name": "名稱",
+      "password": "密碼",
+      "login": "登入"
+    }
+  },
+  "common": {}
+}
