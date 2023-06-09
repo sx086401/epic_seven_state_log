@@ -1,11 +1,15 @@
-import { Button, CssBaseline, ThemeProvider } from '@mui/material'
+import { CssBaseline, ThemeProvider } from '@mui/material'
+import { HashRouter } from 'react-router-dom'
 import { theme } from 'styles'
+import AppRoutes from 'app/AppRoutes'
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Button>HI</Button>
+      <HashRouter>
+        <AppRoutes />
+      </HashRouter>
     </ThemeProvider>
   )
 }
