@@ -3,7 +3,7 @@ import { ThemeOptions, createTheme } from '@mui/material'
 declare module '@mui/material/styles' {
   interface Theme {
     background: {
-      grey: string
+      dark: string
     }
     text: {
       white: string
@@ -14,7 +14,7 @@ declare module '@mui/material/styles' {
   }
   interface ThemeOptions {
     background?: {
-      grey: string
+      dark: string
     }
     text?: {
       white: string
@@ -35,11 +35,11 @@ export const themeOptions: ThemeOptions = {
       main: '#9C9EA0',
     },
     background: {
-      default: '#444C55',
+      default: 'rgb(15, 15, 15)',
     },
   },
   background: {
-    grey: '#9C9EA0',
+    dark: '#121212',
   },
   text: {
     white: '#f2f2f2',

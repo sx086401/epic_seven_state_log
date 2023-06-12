@@ -1,10 +1,25 @@
-import { BaseCenter, BaseInput } from 'common'
+import * as Yup from 'yup'
+import { BaseInput } from 'common'
 import { Box, Typography, styled } from '@mui/material'
+import { pathName } from 'constant'
+import { useFormik } from 'formik'
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import BackgroundImage from 'assets/Briar-Witch-Iseria-portrait.png'
 import BaseButton from 'common/BaseButton'
+import useAuth from 'app/useAuth'
 
-const StyledCenter = styled(BaseCenter)({
+interface FormValues {
+  username: string
+  password: string
+}
+
+const StyledCenter = styled(Box)({
+  position: 'absolute',
+  top: '50%',
+  left: '10%',
+  transform: 'translate(0%, -50%)',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -17,7 +32,27 @@ const StyledCenter = styled(BaseCenter)({
 })
 
 function LoginPage() {
-  const { t } = useTranslation('app')
+  const { t } = useTranslation(['app', 'errors'])
+  const navigate = useNavigate()
+  const { login } = useAuth()
+
+  const validationSchema = useMemo(
+    () =>
+      Yup.object().shape({
+        username: Yup.string().required(t('errors:required')),
+        password: Yup.string().required(t('errors:required')),
+      }),
+    [t]
+  )
+
+  const { errors, touched, getFieldProps, submitForm } = useFormik<FormValues>({
+    initialValues: { username: '', password: '' },
+    validationSchema,
+    onSubmit: ({ username }) => {
+      login(username)
+      navigate(pathName.states)
+    },
+  })
 
   return (
     <Box
@@ -26,16 +61,27 @@ function LoginPage() {
       sx={{
         backgroundImage: `url(${BackgroundImage})`,
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: '115% 100%',
+        backgroundPosition: '100% 100%',
       }}
     >
       <StyledCenter>
         <Typography variant="h4" sx={{ margin: '70px 0 50px 0' }}>
-          {t('title')}
+          {t('app:title')}
         </Typography>
-        <BaseInput placeholder={t('login.name')} width={280} />
-        <BaseInput placeholder={t('login.password')} width={280} type="password" />
-        <BaseButton buttonText={t('login.login')} />
+        <BaseInput
+          placeholder={t('app:login.name')}
+          width={280}
+          error={!!errors.username && touched.username}
+          {...getFieldProps('username')}
+        />
+        <BaseInput
+          placeholder={t('app:login.password')}
+          width={280}
+          type="password"
+          error={!!errors.password && touched.password}
+          {...getFieldProps('password')}
+        />
+        <BaseButton buttonText={t('app:login.login')} onClick={submitForm} />
       </StyledCenter>
     </Box>
   )

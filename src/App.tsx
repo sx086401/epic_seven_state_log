@@ -1,16 +1,32 @@
-import { CssBaseline, ThemeProvider } from '@mui/material'
+import { BaseCenter } from 'common'
+import { CircularProgress, CssBaseline, ThemeProvider } from '@mui/material'
 import { HashRouter } from 'react-router-dom'
+import { Suspense, useMemo } from 'react'
 import { theme } from 'styles'
 import AppRoutes from 'app/AppRoutes'
+import AuthProvider from 'app/AuthProvider'
 
 function App() {
+  const loadingScreen = useMemo(
+    () => (
+      <BaseCenter>
+        <CircularProgress />
+      </BaseCenter>
+    ),
+    []
+  )
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <HashRouter>
-        <AppRoutes />
-      </HashRouter>
-    </ThemeProvider>
+    <Suspense fallback={loadingScreen}>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <HashRouter>
+            <AppRoutes />
+          </HashRouter>
+        </ThemeProvider>
+      </AuthProvider>
+    </Suspense>
   )
 }
 
