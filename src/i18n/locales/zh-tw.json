@@ -5,9 +5,18 @@
       "name": "名稱",
       "password": "密碼",
       "login": "登入"
-    }
+    },
+    "logout": "登出",
+    "characterElement": "角色屬性"
   },
-  "common": {},
+  "common": {
+    "element": "屬性",
+    "fire": "火焰",
+    "ice": "寒氣",
+    "earth": "自然",
+    "light": "光明",
+    "dark": "黑暗"
+  },
   "errors": {
     "required": "必填欄位"
   }

@@ -1,19 +1,20 @@
 import { AppBar, IconButton, Menu, MenuItem, Toolbar, styled } from '@mui/material'
 import { Menu as MenuIcon } from '@mui/icons-material'
-import { pathName } from 'constant'
+import { pathName, size } from 'constant'
 import { theme } from 'styles'
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const StyledAppBar = styled(AppBar)({
-  minHeight: '56px',
-  height: '56px',
+  minHeight: size.navbarHeight,
+  height: size.navbarHeight,
   width: '100%',
   boxShadow: 'none',
   '& .MuiToolbar-root': {
     backgroundColor: theme.background.dark,
-    minHeight: '56px',
-    height: '56px',
+    minHeight: size.navbarHeight,
+    height: size.navbarHeight,
   },
 })
 
@@ -33,26 +34,31 @@ const StyledMenu = styled(Menu)({
 })
 
 function AppNavigationBar() {
+  const { t } = useTranslation('app')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const navigate = useNavigate()
 
-  const onMenuClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMenuClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget)
   }, [])
 
-  const onMenuClose = useCallback(() => setAnchorEl(null), [])
+  const handleTitleClick = useCallback(() => navigate(pathName.states), [navigate])
 
-  const onLogoutClick = useCallback(() => navigate(pathName.login), [navigate])
+  const handleMenuClose = useCallback(() => setAnchorEl(null), [])
+
+  const handleLogoutClick = useCallback(() => navigate(pathName.login), [navigate])
 
   return (
     <StyledAppBar>
       <StyledToolbar>
-        <IconButton disableRipple={true}>Epic Seven State</IconButton>
-        <IconButton disableRipple={true} onClick={onMenuClick} sx={{ marginRight: '10px' }}>
+        <IconButton disableRipple={true} onClick={handleTitleClick}>
+          {t('title')}
+        </IconButton>
+        <IconButton disableRipple={true} onClick={handleMenuClick} sx={{ marginRight: '10px' }}>
           <MenuIcon />
         </IconButton>
-        <StyledMenu open={!!anchorEl} anchorEl={anchorEl} onClose={onMenuClose}>
-          <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
+        <StyledMenu open={!!anchorEl} anchorEl={anchorEl} onClose={handleMenuClose}>
+          <MenuItem onClick={handleLogoutClick}>{t('logout')}</MenuItem>
         </StyledMenu>
       </StyledToolbar>
     </StyledAppBar>

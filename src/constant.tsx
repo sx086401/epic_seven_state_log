@@ -1,8 +1,40 @@
+import { CharacterElement, ElementIcon } from 'types'
+import Dark from 'assets/dark.png'
+import Earth from 'assets/earth.png'
+import Fire from 'assets/fire.png'
+import Ice from 'assets/ice.png'
+import Light from 'assets/light.png'
+
 export const pathName = {
   login: '/login',
   states: '/states',
 }
 
+export const size = {
+  navbarHeight: '56px',
+  sideMenuWidth: '200px',
+}
+
 export const localStorageKey = {
   userToken: 'username',
 }
+
+export const elementList: ElementIcon[] = [
+  {
+    key: CharacterElement.Fire,
+    icon: <img src={Fire} style={{ width: '40px', height: '40px' }} />,
+  },
+  { key: CharacterElement.Ice, icon: <img src={Ice} style={{ width: '40px', height: '40px' }} /> },
+  {
+    key: CharacterElement.Earth,
+    icon: <img src={Earth} style={{ width: '40px', height: '40px' }} />,
+  },
+  {
+    key: CharacterElement.Light,
+    icon: <img src={Light} style={{ width: '40px', height: '40px' }} />,
+  },
+  {
+    key: CharacterElement.Dark,
+    icon: <img src={Dark} style={{ width: '40px', height: '40px' }} />,
+  },
+]
