@@ -1,3 +1,7 @@
 export { default as BaseBackground } from './BaseBackground'
 export { default as BaseCenter } from './BaseCenter'
 export { default as BaseInput } from './BaseInput'
+export { default as BasePageBody } from './BasePageBody'
+export { default as BasePageCenter } from './BasePageCenter'
+export { default as BaseSelect } from './BaseSelect'
+export * from './icons'

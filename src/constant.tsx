@@ -1,4 +1,24 @@
-import { CharacterElement, ElementIcon } from 'types'
+import {
+  AttackSetIcon,
+  CounterSetIcon,
+  CriticalSetIcon,
+  DefenseSetIcon,
+  DestructionSetIcon,
+  HealthSetIcon,
+  HitSetIcon,
+  ImmunitySetIcon,
+  InjurySetIcon,
+  LifeStealSetIcon,
+  PenetrationSetIcon,
+  ProtectionSetIcon,
+  RageSetIcon,
+  ResistSetIcon,
+  RevengeSetIcon,
+  SpeedSetIcon,
+  TorrentSetIcon,
+  UnitySetIcon,
+} from 'common'
+import { CharacterElement, ElementIcon, EquipmentSet } from 'types'
 import Dark from 'assets/dark.png'
 import Earth from 'assets/earth.png'
 import Fire from 'assets/fire.png'
@@ -38,3 +58,24 @@ export const elementList: ElementIcon[] = [
     icon: <img src={Dark} style={{ width: '40px', height: '40px' }} />,
   },
 ]
+
+export const equipmentSetIconMap = {
+  [EquipmentSet.Atk]: <AttackSetIcon />,
+  [EquipmentSet.Counter]: <CounterSetIcon />,
+  [EquipmentSet.Cri]: <CriticalSetIcon />,
+  [EquipmentSet.Def]: <DefenseSetIcon />,
+  [EquipmentSet.Destruction]: <DestructionSetIcon />,
+  [EquipmentSet.Health]: <HealthSetIcon />,
+  [EquipmentSet.Hit]: <HitSetIcon />,
+  [EquipmentSet.Immunity]: <ImmunitySetIcon />,
+  [EquipmentSet.Injury]: <InjurySetIcon />,
+  [EquipmentSet.Penetration]: <PenetrationSetIcon />,
+  [EquipmentSet.Protection]: <ProtectionSetIcon />,
+  [EquipmentSet.Rage]: <RageSetIcon />,
+  [EquipmentSet.Res]: <ResistSetIcon />,
+  [EquipmentSet.Rev]: <RevengeSetIcon />,
+  [EquipmentSet.Spd]: <SpeedSetIcon />,
+  [EquipmentSet.Steal]: <LifeStealSetIcon />,
+  [EquipmentSet.Tor]: <TorrentSetIcon />,
+  [EquipmentSet.Uni]: <UnitySetIcon />,
+}

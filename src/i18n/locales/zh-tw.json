@@ -17,6 +17,13 @@
     "light": "光明",
     "dark": "黑暗"
   },
+  "states": {
+    "currentState": "當前面板",
+    "expectState": "期望面板",
+    "currentEquipment": "當前裝備",
+    "expectEquipment": "期望裝備",
+    "editor": "作者"
+  },
   "errors": {
     "required": "必填欄位"
   }
