@@ -15,7 +15,18 @@
     "ice": "寒氣",
     "earth": "自然",
     "light": "光明",
-    "dark": "黑暗"
+    "dark": "黑暗",
+    "save": "儲存",
+    "cancel": "取消",
+    "searchCharacter": "找角色",
+    "searchEditor": "找作者"
+  },
+  "states": {
+    "currentState": "當前面板",
+    "expectState": "期望面板",
+    "currentEquipment": "當前裝備",
+    "expectEquipment": "期望裝備",
+    "editor": "作者"
   },
   "errors": {
     "required": "必填欄位"
