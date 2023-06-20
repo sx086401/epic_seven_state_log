@@ -1,49 +1,13 @@
-import { Box, Typography, styled } from '@mui/material'
-import { Formik } from 'formik'
+import { BaseButton } from 'common'
+import { Box, IconButton, Typography, styled } from '@mui/material'
+import { Formik, FormikProps } from 'formik'
 import { StateType, StateValues } from './types'
+import { charData } from 'dummyData'
+import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
 import EquipmentList from './EquipmentList'
 import StateList from './StateList'
-
-const dummyData: StateValues = {
-  current: {
-    atk: 1200,
-    def: 1500,
-    health: 15000,
-    spd: 220,
-    cri: 15,
-    crd: 150,
-    eff: 150,
-    res: 130,
-    weapon: 92,
-    helmet: 101,
-    armor: 89,
-    necklace: 89,
-    ring: 96,
-    boots: 94,
-    weaponSet: 'spd',
-    helmetSet: 'spd',
-    armorSet: 'hit',
-    necklaceSet: 'spd',
-    ringSet: 'spd',
-    bootsSet: 'hit',
-    set1: 'spd',
-    set2: 'hit',
-    set3: '',
-  },
-  expect: {
-    atk: 2000,
-    def: 2000,
-    health: 20000,
-    spd: 220,
-    eff: 200,
-    res: 200,
-    set1: 'spd',
-    set2: 'hit',
-    set3: '',
-  },
-  username: 'Test1',
-}
 
 const Title = styled(Typography)({
   fontSize: '18px',
@@ -51,39 +15,72 @@ const Title = styled(Typography)({
   marginBottom: '5px',
 })
 
-interface Props {
-  editing?: boolean
-}
+function StateInfo() {
+  const { t } = useTranslation(['states', 'common'])
+  const [editing, setEditing] = useState<boolean>(false)
+  const formikRef = useRef<FormikProps<StateValues>>(null)
 
-function StateInfo({ editing = false }: Props) {
-  const { t } = useTranslation('states')
+  const handleEditClick = useCallback(() => setEditing(true), [])
+
+  const handleCancelClick = useCallback(() => {
+    formikRef.current?.resetForm()
+    setEditing(false)
+  }, [])
 
   return (
     <Box display="flex" flexDirection="column" margin="0px 4px">
-      <Formik<StateValues> initialValues={dummyData} onSubmit={(values) => console.log(values)}>
+      <Formik<StateValues>
+        initialValues={charData}
+        innerRef={formikRef}
+        onSubmit={(values) => console.log(values)}
+      >
         {({ values }) => (
           <Box display="flex">
             <Box>
-              <Title>{t('currentState')}</Title>
+              <Title>{t('states:currentState')}</Title>
               <StateList type={StateType.Current} editing={editing} />
             </Box>
             <Box>
-              <Title>{t('currentEquipment')}</Title>
+              <Title>{t('states:currentEquipment')}</Title>
               <EquipmentList type={StateType.Current} editing={editing} />
             </Box>
             <Box>
-              <Title>{t('expectState')}</Title>
+              <Title>{t('states:expectState')}</Title>
               <StateList type={StateType.Expect} editing={editing} />
             </Box>
             <Box>
-              <Title>{t('expectEquipment')}</Title>
+              <Title>{t('states:expectEquipment')}</Title>
               <EquipmentList type={StateType.Expect} editing={editing} />
             </Box>
             <Box width="110px">
-              <Title>{t('editor')}</Title>
+              <Title>{t('states:editor')}</Title>
               <Typography paddingLeft="10px" marginTop="100px">
                 {values.username}
               </Typography>
+            </Box>
+            <Box display="flex" alignItems="center" justifyContent="center" width="70px">
+              {editing ? (
+                <Box>
+                  <BaseButton
+                    buttonText={t('common:save')}
+                    type="submit"
+                    sx={{ width: '40px', marginBottom: '10px' }}
+                  />
+                  <BaseButton
+                    buttonText={t('common:cancel')}
+                    onClick={handleCancelClick}
+                    sx={{ width: '40px' }}
+                  />
+                </Box>
+              ) : (
+                <IconButton
+                  disableTouchRipple={true}
+                  onClick={handleEditClick}
+                  sx={{ width: 30, height: 30 }}
+                >
+                  <DriveFileRenameOutlineIcon />
+                </IconButton>
+              )}
             </Box>
           </Box>
         )}

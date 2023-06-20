@@ -33,4 +33,6 @@ export interface StateValues {
   [StateType.Current]: StateFields
   [StateType.Expect]: StateFields
   username: string
+  url: string
+  name: string
 }
