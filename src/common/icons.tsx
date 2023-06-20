@@ -7,29 +7,41 @@ import CounterSetImg from 'assets/counter_set.png'
 import CriDamageImg from 'assets/crd.png'
 import CriticalImg from 'assets/cri.png'
 import CriticalSetImg from 'assets/critical_set.png'
+import DarkImg from 'assets/dark.png'
 import DefenseImg from 'assets/def.png'
 import DefenseSetImg from 'assets/defense_set.png'
 import DestructionSetImg from 'assets/destruction_set.png'
+import EarthImg from 'assets/earth.png'
 import EffectivenessImg from 'assets/eff.png'
+import FireImg from 'assets/fire.png'
 import HealthImg from 'assets/hp.png'
 import HealthSetImg from 'assets/health_set.png'
 import HelmetImg from 'assets/helmet.png'
 import HitSetImg from 'assets/hit_set.png'
+import IceImg from 'assets/ice.png'
 import ImmunitySetImg from 'assets/immunity_set.png'
 import InjurySetImg from 'assets/injury_set.png'
+import KnightImg from 'assets/knight.png'
 import LifeStealSetImg from 'assets/lifesteal_set.png'
+import LightImg from 'assets/light.png'
+import MageImg from 'assets/mage.png'
 import NecklaceImg from 'assets/necklace.png'
 import PenetrationSetImg from 'assets/penetration_set.png'
 import ProtectionSetImg from 'assets/protection_set.png'
 import RageSetImg from 'assets/rage_set.png'
+import RangerImg from 'assets/ranger.png'
 import ResistSetImg from 'assets/resist_set.png'
 import ResistanceImg from 'assets/res.png'
 import RevengeSetImg from 'assets/revenge_set.png'
 import RingImg from 'assets/ring.png'
+import SoulWeaverImg from 'assets/soul_weaver.png'
 import SpeedImg from 'assets/spd.png'
 import SpeedSetImg from 'assets/speed_set.png'
+import StarImg from 'assets/star.png'
+import ThiefImg from 'assets/thief.png'
 import TorrentSetImg from 'assets/torrent_set.png'
 import UnitySetImg from 'assets/unity_set.png'
+import WarriorImg from 'assets/warrior.png'
 import WeaponImg from 'assets/weapon.png'
 
 const iconStyle = { width: 25, height: 25 }
@@ -160,4 +172,52 @@ export const TorrentSetIcon = memo(function RenderTorrentSetIcon() {
 
 export const UnitySetIcon = memo(function RenderUnitySetIcon() {
   return <img src={UnitySetImg} style={iconStyle} />
+})
+
+export const FireIcon = memo(function RenderUnitySetIcon() {
+  return <img src={FireImg} style={iconStyle} />
+})
+
+export const IceIcon = memo(function RenderUnitySetIcon() {
+  return <img src={IceImg} style={iconStyle} />
+})
+
+export const EarthIcon = memo(function RenderUnitySetIcon() {
+  return <img src={EarthImg} style={iconStyle} />
+})
+
+export const LightIcon = memo(function RenderUnitySetIcon() {
+  return <img src={LightImg} style={iconStyle} />
+})
+
+export const DarkIcon = memo(function RenderUnitySetIcon() {
+  return <img src={DarkImg} style={iconStyle} />
+})
+
+export const StarIcon = memo(function RenderUnitySetIcon() {
+  return <img src={StarImg} style={{ width: '16px', height: '16px' }} />
+})
+
+export const KnightIcon = memo(function RenderUnitySetIcon() {
+  return <img src={KnightImg} style={iconStyle} />
+})
+
+export const WarriorIcon = memo(function RenderUnitySetIcon() {
+  return <img src={WarriorImg} style={iconStyle} />
+})
+
+export const ThiefIcon = memo(function RenderUnitySetIcon() {
+  return <img src={ThiefImg} style={iconStyle} />
+})
+
+export const RangerIcon = memo(function RenderUnitySetIcon() {
+  return <img src={RangerImg} style={iconStyle} />
+})
+
+export const MageIcon = memo(function RenderUnitySetIcon() {
+  return <img src={MageImg} style={iconStyle} />
+})
+
+export const SoulWeaverIcon = memo(function RenderUnitySetIcon() {
+  return <img src={SoulWeaverImg} style={iconStyle} />
 })

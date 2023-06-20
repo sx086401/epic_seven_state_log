@@ -17,7 +17,9 @@
     "light": "光明",
     "dark": "黑暗",
     "save": "儲存",
-    "cancel": "取消"
+    "cancel": "取消",
+    "searchCharacter": "找角色",
+    "searchEditor": "找作者"
   },
   "states": {
     "currentState": "當前面板",
