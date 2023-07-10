@@ -2,7 +2,6 @@ import { BaseButton } from 'common'
 import { Box, IconButton, Typography, styled } from '@mui/material'
 import { Formik, FormikProps } from 'formik'
 import { StateType, StateValues } from './types'
-import { charData } from 'dummyData'
 import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
@@ -15,7 +14,11 @@ const Title = styled(Typography)({
   marginBottom: '5px',
 })
 
-function StateInfo() {
+interface Props {
+  stateData: StateValues
+}
+
+function StateInfo({ stateData }: Props) {
   const { t } = useTranslation(['states', 'common'])
   const [editing, setEditing] = useState<boolean>(false)
   const formikRef = useRef<FormikProps<StateValues>>(null)
@@ -30,7 +33,7 @@ function StateInfo() {
   return (
     <Box display="flex" flexDirection="column" margin="0px 4px">
       <Formik<StateValues>
-        initialValues={charData}
+        initialValues={stateData}
         innerRef={formikRef}
         onSubmit={(values) => console.log(values)}
       >
@@ -55,7 +58,7 @@ function StateInfo() {
             <Box width="110px">
               <Title>{t('states:editor')}</Title>
               <Typography paddingLeft="10px" marginTop="100px">
-                {values.username}
+                {values.editor}
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" justifyContent="center" width="70px">

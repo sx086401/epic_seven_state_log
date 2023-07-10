@@ -21,7 +21,7 @@ function StateList({ type, editing = false }: Props) {
   return (
     <Box width="120px">
       <EditableCell icon={<AttackIcon />} field={`${type}.atk`} editing={editing} />
-      <EditableCell icon={<DefenseIcon />} field={`${type}.def`} editing={editing} />
+      <EditableCell icon={<DefenseIcon />} field={`${type}.defense`} editing={editing} />
       <EditableCell icon={<HealthIcon />} field={`${type}.health`} editing={editing} />
       <EditableCell icon={<SpeedIcon />} field={`${type}.spd`} editing={editing} />
       <EditableCell icon={<CriIcon />} field={`${type}.cri`} editing={editing} />

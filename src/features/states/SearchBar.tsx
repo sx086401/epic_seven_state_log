@@ -31,17 +31,17 @@ const StyledButton = styled(IconButton, { shouldForwardProp: (prop) => prop !== 
 interface SearchIconButtonProps {
   name: string
   icon: React.ReactNode
-  value: string
+  selectedValue: string
   onClick: (e: MouseEvent<HTMLButtonElement>) => void
 }
 
-function SearchIconButton({ name, icon, value, onClick }: SearchIconButtonProps) {
+function SearchIconButton({ name, icon, selectedValue, onClick }: SearchIconButtonProps) {
   return (
     <StyledButton
       size="small"
       name={name}
       disableTouchRipple={true}
-      selected={value === name}
+      selected={selectedValue === name}
       onClick={onClick}
     >
       {icon}
@@ -56,6 +56,7 @@ interface Props {
   onElementClick: (e: MouseEvent<HTMLButtonElement>) => void
   onClassClick: (e: MouseEvent<HTMLButtonElement>) => void
   onRankClick: (e: MouseEvent<HTMLButtonElement>) => void
+  onSearchKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 function SearchBar({
@@ -65,88 +66,94 @@ function SearchBar({
   onElementClick,
   onClassClick,
   onRankClick,
+  onSearchKeyUp,
 }: Props) {
   const { t } = useTranslation('common')
 
   return (
     <BaseStickyBar>
       <Box marginRight="30px">
-        <SearchIconButton name="all" value={searchElement} icon={'All'} onClick={onElementClick} />
+        <SearchIconButton
+          name=""
+          selectedValue={searchElement}
+          icon={'All'}
+          onClick={onElementClick}
+        />
         <SearchIconButton
           name="fire"
-          value={searchElement}
+          selectedValue={searchElement}
           icon={<FireIcon />}
           onClick={onElementClick}
         />
         <SearchIconButton
           name="ice"
-          value={searchElement}
+          selectedValue={searchElement}
           icon={<IceIcon />}
           onClick={onElementClick}
         />
         <SearchIconButton
           name="earth"
-          value={searchElement}
+          selectedValue={searchElement}
           icon={<EarthIcon />}
           onClick={onElementClick}
         />
         <SearchIconButton
           name="light"
-          value={searchElement}
+          selectedValue={searchElement}
           icon={<LightIcon />}
           onClick={onElementClick}
         />
         <SearchIconButton
           name="dark"
-          value={searchElement}
+          selectedValue={searchElement}
           icon={<DarkIcon />}
           onClick={onElementClick}
         />
       </Box>
       <Box marginRight="30px">
-        <SearchIconButton name="all" value={searchClass} icon={'All'} onClick={onClassClick} />
+        <SearchIconButton name="" selectedValue={searchClass} icon={'All'} onClick={onClassClick} />
         <SearchIconButton
           name="warrior"
-          value={searchClass}
+          selectedValue={searchClass}
           icon={<WarriorIcon />}
           onClick={onClassClick}
         />
         <SearchIconButton
           name="knight"
-          value={searchClass}
+          selectedValue={searchClass}
           icon={<KnightIcon />}
           onClick={onClassClick}
         />
         <SearchIconButton
           name="thief"
-          value={searchClass}
+          selectedValue={searchClass}
           icon={<ThiefIcon />}
           onClick={onClassClick}
         />
         <SearchIconButton
           name="ranger"
-          value={searchClass}
+          selectedValue={searchClass}
           icon={<RangerIcon />}
           onClick={onClassClick}
         />
         <SearchIconButton
           name="mage"
-          value={searchClass}
+          selectedValue={searchClass}
           icon={<MageIcon />}
           onClick={onClassClick}
         />
         <SearchIconButton
           name="soul_weaver"
-          value={searchClass}
+          selectedValue={searchClass}
           icon={<SoulWeaverIcon />}
           onClick={onClassClick}
         />
       </Box>
       <Box marginRight="30px">
-        <SearchIconButton name="all" value={searchRank} icon={'All'} onClick={onRankClick} />
+        <SearchIconButton name="" selectedValue={searchRank} icon={'All'} onClick={onRankClick} />
         <SearchIconButton
           name="3"
-          value={searchRank}
+          selectedValue={searchRank}
           icon={
             <>
               3<StarIcon />
@@ -156,7 +163,7 @@ function SearchBar({
         />
         <SearchIconButton
           name="4"
-          value={searchRank}
+          selectedValue={searchRank}
           icon={
             <>
               4<StarIcon />
@@ -166,7 +173,7 @@ function SearchBar({
         />
         <SearchIconButton
           name="5"
-          value={searchRank}
+          selectedValue={searchRank}
           icon={
             <>
               5<StarIcon />
@@ -175,8 +182,7 @@ function SearchBar({
           onClick={onRankClick}
         />
       </Box>
-      <BaseSearchBlock placeholder={t('searchCharacter')} sx={{ marginRight: '30px' }} />
-      <BaseSearchBlock placeholder={t('searchEditor')} />
+      <BaseSearchBlock placeholder={t('searchPlaceholder')} onKeyUp={onSearchKeyUp} width={250} />
     </BaseStickyBar>
   )
 }
