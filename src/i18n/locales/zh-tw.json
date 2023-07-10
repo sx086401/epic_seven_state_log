@@ -18,8 +18,7 @@
     "dark": "黑暗",
     "save": "儲存",
     "cancel": "取消",
-    "searchCharacter": "找角色",
-    "searchEditor": "找作者"
+    "searchPlaceholder": "輸入角色或作者"
   },
   "states": {
     "currentState": "當前面板",

@@ -4,14 +4,14 @@ import { useSearchParams } from 'react-router-dom'
 function useUrlProps() {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const elements = searchParams.getAll('element')
+  const element = searchParams.get('element')
 
   const updateSearchParamsPartially = useCallback(
     (params: Record<string, string | string[] | null>) => {
       const newSearchParams = new URLSearchParams(searchParams)
 
       Object.entries(params).forEach(([key, value]) => {
-        if (value === null) {
+        if (value === null || value === '') {
           newSearchParams.delete(key)
         } else if (typeof value === 'string') {
           newSearchParams.set(key, value)
@@ -31,7 +31,7 @@ function useUrlProps() {
   )
 
   return {
-    elements,
+    element,
     setElement,
   }
 }

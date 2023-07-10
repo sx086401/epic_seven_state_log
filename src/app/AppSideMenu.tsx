@@ -32,7 +32,7 @@ const StyledList = styled(List)({
 function AppSideMenu() {
   const { t } = useTranslation(['app', 'common'])
   const [open, setOpen] = useState<boolean>(true)
-  const { elements, setElement } = useUrlProps()
+  const { element, setElement } = useUrlProps()
 
   const handleCharacterHeaderClick = useCallback(() => {
     setOpen((prev) => !prev)
@@ -60,7 +60,7 @@ function AppSideMenu() {
                 component="button"
                 name={key.toString()}
                 disableRipple={true}
-                selected={elements.includes(key)}
+                selected={element === key}
                 onClick={handleElementTabClick}
                 sx={{ paddingLeft: 4 }}
               >

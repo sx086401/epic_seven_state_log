@@ -1,5 +1,5 @@
 import { Box, Card, styled } from '@mui/material'
-import { charData } from 'dummyData'
+import { StateValues } from './types'
 import StateInfo from './StateInfo'
 
 const StyledCard = styled(Card)({
@@ -11,14 +11,18 @@ const StyledCard = styled(Card)({
   marginBottom: '10px',
 })
 
-function CharInfo() {
+interface Props {
+  stateData: StateValues
+}
+
+function CharInfo({ stateData }: Props) {
   return (
     <StyledCard>
       <Box display="flex" flexDirection="column" justifyContent="center" width="120px">
-        <img src={charData.url} />
-        {charData.name}
+        <img src={stateData.character.imageUrl} />
+        {stateData.character.name}
       </Box>
-      <StateInfo />
+      <StateInfo stateData={stateData} />
     </StyledCard>
   )
 }

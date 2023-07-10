@@ -1,11 +1,11 @@
 export enum StateType {
-  Current = 'current',
-  Expect = 'expect',
+  Current = 'currentState',
+  Expect = 'expectState',
 }
 
 interface StateFields {
   atk?: number
-  def?: number
+  defense?: number
   health?: number
   spd?: number
   cri?: number
@@ -29,10 +29,19 @@ interface StateFields {
   set3: string
 }
 
+interface Character {
+  id: number
+  name: string
+  imageUrl: string
+  element: string
+  star: number
+  classes: string
+}
+
 export interface StateValues {
+  id: number
   [StateType.Current]: StateFields
   [StateType.Expect]: StateFields
-  username: string
-  url: string
-  name: string
+  character: Character
+  editor: string
 }
