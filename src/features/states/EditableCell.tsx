@@ -17,7 +17,7 @@ interface Props {
 function EditableCell({ icon, field, editing, setKey = '' }: Props) {
   const { getFieldProps } = useFormikContext<StateValues>()
 
-  const fieldProps = useMemo(() => getFieldProps(field), [field, getFieldProps])
+  const { value, ...restFieldProps } = useMemo(() => getFieldProps(field), [field, getFieldProps])
 
   const baseInputSx = useMemo(() => ({ height: '28px', width: setKey ? '50px' : '80px' }), [setKey])
 
@@ -35,9 +35,9 @@ function EditableCell({ icon, field, editing, setKey = '' }: Props) {
       <Box display="flex">
         {icon}
         {editing ? (
-          <BaseInput sx={baseInputSx} {...fieldProps} />
+          <BaseInput sx={baseInputSx} value={value ?? ''} {...restFieldProps} />
         ) : (
-          <Typography margin="2px 0 2px 5px">{fieldProps.value ?? ''}</Typography>
+          <Typography margin="2px 0 2px 5px">{value ?? ''}</Typography>
         )}
       </Box>
       {setKey &&

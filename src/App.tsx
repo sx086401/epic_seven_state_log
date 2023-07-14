@@ -5,6 +5,8 @@ import { Suspense, useMemo } from 'react'
 import { theme } from 'styles'
 import AppRoutes from 'app/AppRoutes'
 import AuthProvider from 'app/AuthProvider'
+import GlobalSnackBar from 'app/GlobalSnackBar'
+import SnackbarProvider from 'app/SnackbarProvider'
 
 function App() {
   const loadingScreen = useMemo(
@@ -20,10 +22,13 @@ function App() {
     <Suspense fallback={loadingScreen}>
       <AuthProvider>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <HashRouter>
-            <AppRoutes />
-          </HashRouter>
+          <SnackbarProvider>
+            <CssBaseline />
+            <GlobalSnackBar />
+            <HashRouter>
+              <AppRoutes />
+            </HashRouter>
+          </SnackbarProvider>
         </ThemeProvider>
       </AuthProvider>
     </Suspense>

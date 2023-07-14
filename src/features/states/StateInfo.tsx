@@ -1,8 +1,9 @@
-import { BaseButton } from 'common'
+import { BaseButton, useSnackbar } from 'common'
 import { Box, IconButton, Typography, styled } from '@mui/material'
 import { Formik, FormikProps } from 'formik'
 import { StateType, StateValues } from './types'
-import { useCallback, useRef, useState } from 'react'
+import { statesApi } from 'apiClient'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
 import EquipmentList from './EquipmentList'
@@ -22,6 +23,8 @@ function StateInfo({ stateData }: Props) {
   const { t } = useTranslation(['states', 'common'])
   const [editing, setEditing] = useState<boolean>(false)
   const formikRef = useRef<FormikProps<StateValues>>(null)
+  const [updateState, result] = statesApi.useUpdateStateMutation()
+  const setSnackbar = useSnackbar()
 
   const handleEditClick = useCallback(() => setEditing(true), [])
 
@@ -30,14 +33,30 @@ function StateInfo({ stateData }: Props) {
     setEditing(false)
   }, [])
 
+  const { isSuccess, isError, isLoading } = result
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSnackbar({ severity: 'success', message: t('common:updateSucceed') })
+    }
+
+    if (isError) {
+      setSnackbar({ severity: 'error', message: t('common:updateFailed') })
+    }
+  }, [isError, isSuccess, result.data, setSnackbar, t])
+
+  const handleSubmit = useCallback(
+    (values: StateValues) => {
+      updateState(values)
+      setEditing(false)
+    },
+    [updateState]
+  )
+
   return (
     <Box display="flex" flexDirection="column" margin="0px 4px">
-      <Formik<StateValues>
-        initialValues={stateData}
-        innerRef={formikRef}
-        onSubmit={(values) => console.log(values)}
-      >
-        {({ values }) => (
+      <Formik<StateValues> initialValues={stateData} innerRef={formikRef} onSubmit={handleSubmit}>
+        {({ values, submitForm }) => (
           <Box display="flex">
             <Box>
               <Title>{t('states:currentState')}</Title>
@@ -67,6 +86,8 @@ function StateInfo({ stateData }: Props) {
                   <BaseButton
                     buttonText={t('common:save')}
                     type="submit"
+                    onClick={submitForm}
+                    loading={isLoading}
                     sx={{ width: '40px', marginBottom: '10px' }}
                   />
                   <BaseButton
