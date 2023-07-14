@@ -72,7 +72,7 @@ function SearchBar({
 
   return (
     <BaseStickyBar>
-      <Box marginRight="30px">
+      <Box display="flex" marginRight="30px">
         <SearchIconButton
           name=""
           selectedValue={searchElement}
@@ -110,7 +110,7 @@ function SearchBar({
           onClick={onElementClick}
         />
       </Box>
-      <Box marginRight="30px">
+      <Box display="flex" marginRight="30px">
         <SearchIconButton name="" selectedValue={searchClass} icon={'All'} onClick={onClassClick} />
         <SearchIconButton
           name="warrior"
@@ -149,7 +149,7 @@ function SearchBar({
           onClick={onClassClick}
         />
       </Box>
-      <Box marginRight="30px">
+      <Box display="flex" marginRight="30px">
         <SearchIconButton name="" selectedValue={searchRank} icon={'All'} onClick={onRankClick} />
         <SearchIconButton
           name="3"

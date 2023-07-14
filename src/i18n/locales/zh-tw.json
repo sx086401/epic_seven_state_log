@@ -18,7 +18,9 @@
     "dark": "黑暗",
     "save": "儲存",
     "cancel": "取消",
-    "searchPlaceholder": "輸入角色或作者"
+    "searchPlaceholder": "輸入角色或作者",
+    "updateSucceed": "更新成功",
+    "updateFailed": "更新失敗"
   },
   "states": {
     "currentState": "當前面板",
