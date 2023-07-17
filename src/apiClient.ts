@@ -1,4 +1,4 @@
-import { StateValues } from 'features/states/types'
+import { Character, StateValues } from 'features/states/types'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { findIndex } from 'lodash'
@@ -43,6 +43,18 @@ export const statesApi = createApi({
         )
       },
       // invalidatesTags: (result) => [{ type: 'states', id: result?.id }],
+    }),
+  }),
+})
+
+export const characterApi = createApi({
+  reducerPath: 'character',
+  tagTypes: ['characters'],
+  baseQuery: fetchBaseQuery({ baseUrl: `http://${API_URL}/api/` }),
+  endpoints: (builder) => ({
+    getCharacters: builder.query<Character[], any>({
+      query: () => `characters`,
+      transformResponse: (resp: any[]) => resp.map((data) => camelizeKeys(data) as Character),
     }),
   }),
 })

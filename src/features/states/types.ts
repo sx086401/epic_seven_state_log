@@ -29,7 +29,7 @@ interface StateFields {
   set3: string
 }
 
-interface Character {
+export interface Character {
   id: number
   name: string
   imageUrl: string

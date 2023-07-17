@@ -58,6 +58,7 @@ interface Props {
   onRoleClick: (e: MouseEvent<HTMLButtonElement>) => void
   onRankClick: (e: MouseEvent<HTMLButtonElement>) => void
   onSearchKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  onAddClick?: () => void
 }
 
 function SearchBar({
@@ -68,6 +69,7 @@ function SearchBar({
   onRoleClick,
   onRankClick,
   onSearchKeyUp,
+  onAddClick,
 }: Props) {
   const { t } = useTranslation('common')
 
@@ -183,8 +185,16 @@ function SearchBar({
           onClick={onRankClick}
         />
       </Box>
-      <BaseSearchBlock placeholder={t('searchPlaceholder')} onKeyUp={onSearchKeyUp} width={250} />
-      <BaseButton buttonText={t('addState')} sx={{ marginLeft: '20px', width: '80px' }} />
+      {onSearchKeyUp && (
+        <BaseSearchBlock placeholder={t('searchPlaceholder')} onKeyUp={onSearchKeyUp} width={250} />
+      )}
+      {onAddClick && (
+        <BaseButton
+          buttonText={t('addState')}
+          onClick={onAddClick}
+          sx={{ marginLeft: '20px', width: '80px' }}
+        />
+      )}
     </BaseStickyBar>
   )
 }

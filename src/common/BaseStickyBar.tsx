@@ -1,9 +1,8 @@
 import { AppBar, Toolbar, ToolbarProps, styled } from '@mui/material'
 import { ReactNode } from 'react'
-import { theme } from 'styles'
 
 const StyledAppBar = styled(AppBar)({
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: 'transparent',
   backgroundImage: 'none',
   boxShadow: 'none',
 })

@@ -4,14 +4,16 @@ import { KeyboardEvent, MouseEvent, useMemo } from 'react'
 import { statesApi } from 'apiClient'
 import { useCallback, useState } from 'react'
 import { useUrlProps } from 'hooks'
+import AddStateModal from './AddStateModal'
 import CharInfo from './CharInfo'
 import SearchBar from './SearchBar'
 
 function StatesPage() {
+  const { element, setElement } = useUrlProps()
   const [searchRole, setSearchRole] = useState('')
   const [searchRank, setSearchRank] = useState('')
   const [searchWord, setSearchWord] = useState('')
-  const { element, setElement } = useUrlProps()
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   const stateListParams = useMemo(
     () => ({
@@ -46,6 +48,10 @@ function StatesPage() {
     }
   }, [])
 
+  const handleModalClose = useCallback(() => setModalOpen(false), [])
+
+  const handleModalOpen = useCallback(() => setModalOpen(true), [])
+
   return (
     <>
       <SearchBar
@@ -56,8 +62,9 @@ function StatesPage() {
         onRoleClick={handleSearchRoleClick}
         onRankClick={handleSearchRankClick}
         onSearchKeyUp={handleSearchKeyUp}
+        onAddClick={handleModalOpen}
       />
-      <BasePageCenter>
+      <BasePageCenter overflow="scroll" height="600px">
         {!isFetching && states ? (
           <Box>
             {states.map((state) => (
@@ -68,6 +75,7 @@ function StatesPage() {
           <BaseLoading />
         )}
       </BasePageCenter>
+      <AddStateModal open={modalOpen} onClose={handleModalClose} />
     </>
   )
 }

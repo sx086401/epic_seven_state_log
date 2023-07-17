@@ -28,7 +28,8 @@
     "expectState": "期望面板",
     "currentEquipment": "當前裝備",
     "expectEquipment": "期望裝備",
-    "editor": "作者"
+    "editor": "作者",
+    "addState": "新增面板"
   },
   "errors": {
     "required": "必填欄位"
