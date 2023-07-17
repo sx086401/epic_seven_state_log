@@ -1,4 +1,5 @@
 import {
+  BaseButton,
   BaseSearchBlock,
   BaseStickyBar,
   DarkIcon,
@@ -51,20 +52,20 @@ function SearchIconButton({ name, icon, selectedValue, onClick }: SearchIconButt
 
 interface Props {
   searchElement: string
-  searchClass: string
+  searchRole: string
   searchRank: string
   onElementClick: (e: MouseEvent<HTMLButtonElement>) => void
-  onClassClick: (e: MouseEvent<HTMLButtonElement>) => void
+  onRoleClick: (e: MouseEvent<HTMLButtonElement>) => void
   onRankClick: (e: MouseEvent<HTMLButtonElement>) => void
   onSearchKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 function SearchBar({
   searchElement,
-  searchClass,
+  searchRole,
   searchRank,
   onElementClick,
-  onClassClick,
+  onRoleClick,
   onRankClick,
   onSearchKeyUp,
 }: Props) {
@@ -111,42 +112,42 @@ function SearchBar({
         />
       </Box>
       <Box display="flex" marginRight="30px">
-        <SearchIconButton name="" selectedValue={searchClass} icon={'All'} onClick={onClassClick} />
+        <SearchIconButton name="" selectedValue={searchRole} icon={'All'} onClick={onRoleClick} />
         <SearchIconButton
           name="warrior"
-          selectedValue={searchClass}
+          selectedValue={searchRole}
           icon={<WarriorIcon />}
-          onClick={onClassClick}
+          onClick={onRoleClick}
         />
         <SearchIconButton
           name="knight"
-          selectedValue={searchClass}
+          selectedValue={searchRole}
           icon={<KnightIcon />}
-          onClick={onClassClick}
+          onClick={onRoleClick}
         />
         <SearchIconButton
           name="thief"
-          selectedValue={searchClass}
+          selectedValue={searchRole}
           icon={<ThiefIcon />}
-          onClick={onClassClick}
+          onClick={onRoleClick}
         />
         <SearchIconButton
           name="ranger"
-          selectedValue={searchClass}
+          selectedValue={searchRole}
           icon={<RangerIcon />}
-          onClick={onClassClick}
+          onClick={onRoleClick}
         />
         <SearchIconButton
           name="mage"
-          selectedValue={searchClass}
+          selectedValue={searchRole}
           icon={<MageIcon />}
-          onClick={onClassClick}
+          onClick={onRoleClick}
         />
         <SearchIconButton
           name="soul_weaver"
-          selectedValue={searchClass}
+          selectedValue={searchRole}
           icon={<SoulWeaverIcon />}
-          onClick={onClassClick}
+          onClick={onRoleClick}
         />
       </Box>
       <Box display="flex" marginRight="30px">
@@ -183,6 +184,7 @@ function SearchBar({
         />
       </Box>
       <BaseSearchBlock placeholder={t('searchPlaceholder')} onKeyUp={onSearchKeyUp} width={250} />
+      <BaseButton buttonText={t('addState')} sx={{ marginLeft: '20px', width: '80px' }} />
     </BaseStickyBar>
   )
 }

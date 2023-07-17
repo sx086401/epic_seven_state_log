@@ -35,7 +35,7 @@ interface Character {
   imageUrl: string
   element: string
   star: number
-  classes: string
+  role: string
 }
 
 export interface StateValues {

@@ -8,7 +8,7 @@ import CharInfo from './CharInfo'
 import SearchBar from './SearchBar'
 
 function StatesPage() {
-  const [searchClass, setSearchClass] = useState('')
+  const [searchRole, setSearchRole] = useState('')
   const [searchRank, setSearchRank] = useState('')
   const [searchWord, setSearchWord] = useState('')
   const { element, setElement } = useUrlProps()
@@ -16,11 +16,11 @@ function StatesPage() {
   const stateListParams = useMemo(
     () => ({
       ...(element ? { element: element } : {}),
-      ...(searchClass ? { classes: searchClass } : {}),
+      ...(searchRole ? { role: searchRole } : {}),
       ...(searchRank ? { star: searchRank } : {}),
       ...(searchWord ? { search: searchWord } : {}),
     }),
-    [searchClass, element, searchRank, searchWord]
+    [searchRole, element, searchRank, searchWord]
   )
 
   const { data: states, isFetching } = statesApi.useGetStatesQuery(stateListParams)
@@ -32,8 +32,8 @@ function StatesPage() {
     [setElement]
   )
 
-  const handleSearchClassClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
-    setSearchClass(e.currentTarget.name)
+  const handleSearchRoleClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    setSearchRole(e.currentTarget.name)
   }, [])
 
   const handleSearchRankClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
@@ -50,10 +50,10 @@ function StatesPage() {
     <>
       <SearchBar
         searchElement={element ?? ''}
-        searchClass={searchClass}
+        searchRole={searchRole}
         searchRank={searchRank}
         onElementClick={handleSearchElementClick}
-        onClassClick={handleSearchClassClick}
+        onRoleClick={handleSearchRoleClick}
         onRankClick={handleSearchRankClick}
         onSearchKeyUp={handleSearchKeyUp}
       />

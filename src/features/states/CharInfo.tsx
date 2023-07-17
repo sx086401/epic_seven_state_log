@@ -1,4 +1,4 @@
-import { Box, Card, styled } from '@mui/material'
+import { Box, Card, Typography, styled } from '@mui/material'
 import { StateValues } from './types'
 import StateInfo from './StateInfo'
 
@@ -18,9 +18,9 @@ interface Props {
 function CharInfo({ stateData }: Props) {
   return (
     <StyledCard>
-      <Box display="flex" flexDirection="column" justifyContent="center" width="120px">
+      <Box display="flex" flexDirection="column" justifyContent="center" width="130px">
         <img src={stateData.character.imageUrl} />
-        {stateData.character.name}
+        <Typography textAlign="center">{stateData.character.name}</Typography>
       </Box>
       <StateInfo stateData={stateData} />
     </StyledCard>
