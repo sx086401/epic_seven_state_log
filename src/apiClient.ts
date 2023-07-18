@@ -44,6 +44,18 @@ export const statesApi = createApi({
       },
       // invalidatesTags: (result) => [{ type: 'states', id: result?.id }],
     }),
+    createState: builder.mutation<StateValues, StateValues>({
+      query: (body) => ({ url: 'states', method: 'POST', body: decamelizeKeys(body) }),
+      invalidatesTags: (result, error) => {
+        console.log(result)
+        console.log(error)
+        if (error) {
+          return []
+        }
+
+        return ['states']
+      },
+    }),
   }),
 })
 

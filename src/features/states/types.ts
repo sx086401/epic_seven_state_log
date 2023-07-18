@@ -39,9 +39,10 @@ export interface Character {
 }
 
 export interface StateValues {
-  id: number
+  id?: number
   [StateType.Current]: StateFields
   [StateType.Expect]: StateFields
+  characterId: number
   character: Character
   editor: string
 }

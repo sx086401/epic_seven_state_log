@@ -17,11 +17,13 @@ const Title = styled(Typography)({
 
 interface Props {
   stateData: StateValues
+  isCreate?: boolean
+  onCreate?: (values: StateValues) => void
 }
 
-function StateInfo({ stateData }: Props) {
+function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
   const { t } = useTranslation(['states', 'common'])
-  const [editing, setEditing] = useState<boolean>(false)
+  const [editing, setEditing] = useState<boolean>(isCreate)
   const formikRef = useRef<FormikProps<StateValues>>(null)
   const [updateState, result] = statesApi.useUpdateStateMutation()
   const setSnackbar = useSnackbar()
@@ -47,10 +49,16 @@ function StateInfo({ stateData }: Props) {
 
   const handleSubmit = useCallback(
     (values: StateValues) => {
+      if (isCreate && onCreate) {
+        onCreate(values)
+
+        return
+      }
+
       updateState(values)
       setEditing(false)
     },
-    [updateState]
+    [onCreate, isCreate, updateState]
   )
 
   return (
@@ -74,12 +82,14 @@ function StateInfo({ stateData }: Props) {
               <Title>{t('states:expectEquipment')}</Title>
               <EquipmentList type={StateType.Expect} editing={editing} />
             </Box>
-            <Box width="110px">
-              <Title>{t('states:editor')}</Title>
-              <Typography paddingLeft="10px" marginTop="100px">
-                {values.editor}
-              </Typography>
-            </Box>
+            {isCreate ? null : (
+              <Box width="110px">
+                <Title>{t('states:editor')}</Title>
+                <Typography paddingLeft="10px" marginTop="100px">
+                  {values.editor}
+                </Typography>
+              </Box>
+            )}
             <Box display="flex" alignItems="center" justifyContent="center" width="70px">
               {editing ? (
                 <Box>
@@ -90,11 +100,13 @@ function StateInfo({ stateData }: Props) {
                     loading={isLoading}
                     sx={{ width: '40px', marginBottom: '10px' }}
                   />
-                  <BaseButton
-                    buttonText={t('common:cancel')}
-                    onClick={handleCancelClick}
-                    sx={{ width: '40px' }}
-                  />
+                  {isCreate ? null : (
+                    <BaseButton
+                      buttonText={t('common:cancel')}
+                      onClick={handleCancelClick}
+                      sx={{ width: '40px' }}
+                    />
+                  )}
                 </Box>
               ) : (
                 <IconButton
