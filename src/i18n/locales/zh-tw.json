@@ -18,21 +18,24 @@
     "dark": "黑暗",
     "save": "儲存",
     "cancel": "取消",
+    "delete": "刪除",
     "searchPlaceholder": "輸入角色或作者",
     "updateSucceed": "更新成功",
     "updateFailed": "更新失敗",
     "createSucceed": "新增成功",
     "createFailed": "新增失敗",
-    "addState": "新增面板"
+    "addState": "新增面板",
+    "confirmDelete": "確定要刪除嗎",
+    "deleteSucceed": "刪除成功",
+    "deleteFailed": "刪除失敗"
   },
   "states": {
     "currentState": "當前面板",
     "expectState": "期望面板",
-    "currentEquipment": "當前裝備",
-    "expectEquipment": "期望裝備",
+    "currentEquipment": "當前裝備分數",
+    "expectEquipment": "期望裝備分數",
     "editor": "作者",
-    "addState": "新增面板",
-    "equipmentPlaceholder": "分數"
+    "addState": "新增面板"
   },
   "errors": {
     "required": "必填欄位"

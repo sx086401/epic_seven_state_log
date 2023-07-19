@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { BaseButton, useSnackbar } from 'common'
+import { BaseButton, BaseModal, useSnackbar } from 'common'
 import { Box, IconButton, Typography, styled } from '@mui/material'
 import { Formik, FormikProps } from 'formik'
 import { StateFields, StateType, StateValues } from './types'
@@ -83,8 +83,12 @@ const validationSchema = yup.object({
 function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
   const { t } = useTranslation(['states', 'common'])
   const [editing, setEditing] = useState<boolean>(isCreate)
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
   const formikRef = useRef<FormikProps<StateValues>>(null)
-  const [updateState, { isSuccess, isError, isLoading }] = statesApi.useUpdateStateMutation()
+  const [updateState, { isSuccess: isUpdateSuccess, isError: isUpdateError, isLoading }] =
+    statesApi.useUpdateStateMutation()
+  const [deleteState, { isSuccess: isDeleteSuccess, isError: isDeleteError }] =
+    statesApi.useDeleteStateMutation()
   const setSnackbar = useSnackbar()
   const currentUser = getUserToken()
 
@@ -96,15 +100,21 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
   }, [])
 
   useEffect(() => {
-    if (isSuccess) {
-      setSnackbar({ severity: 'success', message: t('common:updateSucceed') })
+    if (isUpdateSuccess || isDeleteSuccess) {
+      setSnackbar({
+        severity: 'success',
+        message: isUpdateSuccess ? t('common:updateSucceed') : t('common:deleteSucceed'),
+      })
       setEditing(false)
     }
 
-    if (isError) {
-      setSnackbar({ severity: 'error', message: t('common:updateFailed') })
+    if (isUpdateError || isDeleteError) {
+      setSnackbar({
+        severity: 'error',
+        message: isUpdateError ? t('common:updateFailed') : t('common:deleteFailed'),
+      })
     }
-  }, [isError, isSuccess, setSnackbar, t])
+  }, [isDeleteError, isDeleteSuccess, isUpdateError, isUpdateSuccess, setSnackbar, t])
 
   const handleSubmit = useCallback(
     ({ expectState, currentState, ...rest }: StateValues) => {
@@ -129,6 +139,17 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
     () => currentUser === stateData.editor && !editing,
     [currentUser, editing, stateData.editor]
   )
+
+  const handleDelete = useCallback(() => {
+    if (!stateData.id) {
+      return
+    }
+    deleteState(stateData.id)
+  }, [deleteState, stateData.id])
+
+  const handleDeleteModalClose = useCallback(() => setDeleteModalOpen(false), [])
+
+  const handleDeleteModalOpen = useCallback(() => setDeleteModalOpen(true), [])
 
   return (
     <Box display="flex" flexDirection="column" margin="0px 4px">
@@ -166,20 +187,25 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
             )}
             <Box display="flex" alignItems="center" justifyContent="center" width="70px">
               {editing && (
-                <Box>
+                <Box sx={{ '& .MuiButtonBase-root': { width: '40px', marginBottom: '10px' } }}>
                   <BaseButton
                     buttonText={t('common:save')}
                     type="submit"
                     onClick={submitForm}
                     loading={isLoading}
-                    sx={{ width: '40px', marginBottom: '10px' }}
                   />
                   {isCreate ? null : (
-                    <BaseButton
-                      buttonText={t('common:cancel')}
-                      onClick={handleCancelClick}
-                      sx={{ width: '40px' }}
-                    />
+                    <>
+                      <BaseButton buttonText={t('common:cancel')} onClick={handleCancelClick} />
+                      <BaseButton
+                        buttonText={t('common:delete')}
+                        onClick={handleDeleteModalOpen}
+                        sx={{
+                          backgroundColor: 'red',
+                          '&:hover': { backgroundColor: 'red', opacity: 0.8 },
+                        }}
+                      />
+                    </>
                   )}
                 </Box>
               )}
@@ -196,6 +222,32 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
           </Box>
         )}
       </Formik>
+      <BaseModal
+        open={deleteModalOpen}
+        onClose={handleDeleteModalClose}
+        hideDivider={true}
+        PaperProps={{ sx: { padding: '8px 16px' } }}
+        actionButtons={
+          <>
+            <BaseButton
+              buttonText={t('common:delete')}
+              onClick={handleDelete}
+              sx={{
+                width: 100,
+                backgroundColor: 'red',
+                '&:hover': { backgroundColor: 'red', opacity: 0.8 },
+              }}
+            />
+            <BaseButton
+              buttonText={t('common:cancel')}
+              onClick={handleDeleteModalClose}
+              sx={{ width: 100 }}
+            />
+          </>
+        }
+      >
+        <Typography>{t('common:confirmDelete')}</Typography>
+      </BaseModal>
     </Box>
   )
 }

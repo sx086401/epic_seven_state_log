@@ -58,6 +58,16 @@ export const statesApi = createApi({
         return ['states']
       },
     }),
+    deleteState: builder.mutation<any, number>({
+      query: (id) => ({ url: `states/${id}/delete`, method: 'DELETE' }),
+      invalidatesTags: (result, error) => {
+        if (error) {
+          return []
+        }
+
+        return ['states']
+      },
+    }),
   }),
 })
 
