@@ -18,7 +18,16 @@ function GlobalSnackBar() {
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       onClose={handleClose}
     >
-      <Alert severity={snackbarProps.severity} sx={{ width: '100%', whiteSpace: 'pre-line' }}>
+      <Alert
+        severity={snackbarProps.severity}
+        sx={{
+          width: '100%',
+          whiteSpace: 'pre-line',
+          color: 'white',
+          backgroundColor: snackbarProps.severity === 'error' ? 'red' : 'green',
+          '& .MuiAlert-icon': { color: 'white' },
+        }}
+      >
         {snackbarProps.message}
       </Alert>
     </Snackbar>
