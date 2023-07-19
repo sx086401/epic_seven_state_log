@@ -3,7 +3,7 @@ export enum StateType {
   Expect = 'expectState',
 }
 
-interface StateFields {
+export interface StateFields {
   atk?: number
   defense?: number
   health?: number
@@ -29,19 +29,20 @@ interface StateFields {
   set3: string
 }
 
-interface Character {
+export interface Character {
   id: number
   name: string
   imageUrl: string
   element: string
   star: number
-  classes: string
+  role: string
 }
 
 export interface StateValues {
-  id: number
+  id?: number
   [StateType.Current]: StateFields
   [StateType.Expect]: StateFields
+  characterId: number
   character: Character
   editor: string
 }

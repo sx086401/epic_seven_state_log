@@ -4,6 +4,7 @@ const StyledButton = styled(Button)({
   width: '160px',
   height: '36px',
   backgroundColor: '#707070',
+  whiteSpace: 'nowrap',
 })
 
 const ButtonText = styled('span', { shouldForwardProp: (prop) => prop !== 'hidden' })(

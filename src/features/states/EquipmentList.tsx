@@ -5,6 +5,7 @@ import { equipmentSetIconMap } from 'constant'
 import { get } from 'lodash'
 import { useFormikContext } from 'formik'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import EditableCell from './EditableCell'
 import SetSelect from './SetSelect'
 
@@ -21,6 +22,8 @@ function SetCell({ field, editing }: { field: string; editing: boolean }) {
 }
 
 function EquipmentList({ type, editing = false }: Props) {
+  const { t } = useTranslation('states')
+
   return (
     <Box width="160px">
       <EditableCell
@@ -28,36 +31,42 @@ function EquipmentList({ type, editing = false }: Props) {
         field={`${type}.weapon`}
         editing={editing}
         setKey={`${type}.weaponSet`}
+        placeholder={t('equipmentPlaceholder')}
       />
       <EditableCell
         icon={<HelmetIcon />}
         field={`${type}.helmet`}
         editing={editing}
         setKey={`${type}.helmetSet`}
+        placeholder={t('equipmentPlaceholder')}
       />
       <EditableCell
         icon={<ArmorIcon />}
         field={`${type}.armor`}
         editing={editing}
         setKey={`${type}.armorSet`}
+        placeholder={t('equipmentPlaceholder')}
       />
       <EditableCell
         icon={<NecklaceIcon />}
         field={`${type}.necklace`}
         editing={editing}
         setKey={`${type}.necklaceSet`}
+        placeholder={t('equipmentPlaceholder')}
       />
       <EditableCell
         icon={<RingIcon />}
         field={`${type}.ring`}
         editing={editing}
         setKey={`${type}.ringSet`}
+        placeholder={t('equipmentPlaceholder')}
       />
       <EditableCell
         icon={<BootsIcon />}
         field={`${type}.boots`}
         editing={editing}
         setKey={`${type}.bootsSet`}
+        placeholder={t('equipmentPlaceholder')}
       />
       <Box marginTop="20px" display="flex" justifyContent={editing ? 'space-around' : ''}>
         <SetCell field={`${type}.set1`} editing={editing} />

@@ -1,4 +1,4 @@
-import { StateValues } from 'features/states/types'
+import { Character, StateValues } from 'features/states/types'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { findIndex } from 'lodash'
@@ -33,16 +33,42 @@ export const statesApi = createApi({
         body: decamelizeKeys(body),
       }),
       async onQueryStarted(body, { dispatch, queryFulfilled }) {
-        const { data: newData } = await queryFulfilled
+        try {
+          const { data: newData } = await queryFulfilled
 
-        dispatch(
-          statesApi.util.updateQueryData('getStates', {}, (originData) => {
-            const index = findIndex(originData, { id: body.id })
-            originData.splice(index, 1, camelizeKeys(newData) as StateValues)
-          })
-        )
+          dispatch(
+            statesApi.util.updateQueryData('getStates', {}, (originData) => {
+              const index = findIndex(originData, { id: body.id })
+              originData.splice(index, 1, camelizeKeys(newData) as StateValues)
+            })
+          )
+        } catch {
+          return
+        }
       },
       // invalidatesTags: (result) => [{ type: 'states', id: result?.id }],
+    }),
+    createState: builder.mutation<StateValues, StateValues>({
+      query: (body) => ({ url: 'states', method: 'POST', body: decamelizeKeys(body) }),
+      invalidatesTags: (result, error) => {
+        if (error) {
+          return []
+        }
+
+        return ['states']
+      },
+    }),
+  }),
+})
+
+export const characterApi = createApi({
+  reducerPath: 'character',
+  tagTypes: ['characters'],
+  baseQuery: fetchBaseQuery({ baseUrl: `http://${API_URL}/api/` }),
+  endpoints: (builder) => ({
+    getCharacters: builder.query<Character[], any>({
+      query: () => `characters`,
+      transformResponse: (resp: any[]) => resp.map((data) => camelizeKeys(data) as Character),
     }),
   }),
 })

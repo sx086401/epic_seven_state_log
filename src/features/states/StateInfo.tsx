@@ -1,9 +1,12 @@
+import * as yup from 'yup'
 import { BaseButton, useSnackbar } from 'common'
 import { Box, IconButton, Typography, styled } from '@mui/material'
 import { Formik, FormikProps } from 'formik'
-import { StateType, StateValues } from './types'
+import { StateFields, StateType, StateValues } from './types'
+import { getUserToken } from 'app/utils'
+import { includes } from 'lodash'
 import { statesApi } from 'apiClient'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
 import EquipmentList from './EquipmentList'
@@ -17,14 +20,73 @@ const Title = styled(Typography)({
 
 interface Props {
   stateData: StateValues
+  isCreate?: boolean
+  onCreate?: (values: StateValues) => void
 }
 
-function StateInfo({ stateData }: Props) {
+const StateNumberFields = [
+  'atk',
+  'defense',
+  'health',
+  'spd',
+  'cri',
+  'crd',
+  'eff',
+  'res',
+  'weapon',
+  'helmet',
+  'armor',
+  'necklace',
+  'ring',
+  'boots',
+]
+
+function convertStateFields(raw: StateFields): StateFields {
+  const newEntries = Object.entries(raw).map(([key, value]) =>
+    includes(StateNumberFields, key) && value === '' ? [key, null] : [key, value]
+  )
+
+  return Object.fromEntries(newEntries)
+}
+
+const stateValidationSchema = yup.object({
+  atk: yup.number().min(0).nullable(),
+  defense: yup.number().min(0).nullable(),
+  health: yup.number().min(0).nullable(),
+  spd: yup.number().min(0).nullable(),
+  cri: yup.number().min(0).nullable(),
+  crd: yup.number().min(0).nullable(),
+  eff: yup.number().min(0).nullable(),
+  res: yup.number().min(0).nullable(),
+  weapon: yup.number().min(0).nullable(),
+  helmet: yup.number().min(0).nullable(),
+  armor: yup.number().min(0).nullable(),
+  necklace: yup.number().min(0).nullable(),
+  ring: yup.number().min(0).nullable(),
+  boots: yup.number().min(0).nullable(),
+  weaponSet: yup.string().nullable(),
+  helmetSet: yup.string().nullable(),
+  armorSet: yup.string().nullable(),
+  necklaceSet: yup.string().nullable(),
+  ringSet: yup.string().nullable(),
+  bootsSet: yup.string().nullable(),
+  set1: yup.string().nullable(),
+  set2: yup.string().nullable(),
+  set3: yup.string().nullable(),
+})
+
+const validationSchema = yup.object({
+  [StateType.Current]: stateValidationSchema,
+  [StateType.Expect]: stateValidationSchema,
+})
+
+function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
   const { t } = useTranslation(['states', 'common'])
-  const [editing, setEditing] = useState<boolean>(false)
+  const [editing, setEditing] = useState<boolean>(isCreate)
   const formikRef = useRef<FormikProps<StateValues>>(null)
-  const [updateState, result] = statesApi.useUpdateStateMutation()
+  const [updateState, { isSuccess, isError, isLoading }] = statesApi.useUpdateStateMutation()
   const setSnackbar = useSnackbar()
+  const currentUser = getUserToken()
 
   const handleEditClick = useCallback(() => setEditing(true), [])
 
@@ -33,29 +95,49 @@ function StateInfo({ stateData }: Props) {
     setEditing(false)
   }, [])
 
-  const { isSuccess, isError, isLoading } = result
-
   useEffect(() => {
     if (isSuccess) {
       setSnackbar({ severity: 'success', message: t('common:updateSucceed') })
+      setEditing(false)
     }
 
     if (isError) {
       setSnackbar({ severity: 'error', message: t('common:updateFailed') })
     }
-  }, [isError, isSuccess, result.data, setSnackbar, t])
+  }, [isError, isSuccess, setSnackbar, t])
 
   const handleSubmit = useCallback(
-    (values: StateValues) => {
-      updateState(values)
-      setEditing(false)
+    ({ expectState, currentState, ...rest }: StateValues) => {
+      const value = {
+        ...rest,
+        expectState: convertStateFields(expectState),
+        currentState: convertStateFields(currentState),
+      }
+
+      if (isCreate && onCreate) {
+        onCreate(value)
+
+        return
+      }
+
+      updateState(value)
     },
-    [updateState]
+    [onCreate, isCreate, updateState]
+  )
+
+  const displayEditButton = useMemo(
+    () => currentUser === stateData.editor && !editing,
+    [currentUser, editing, stateData.editor]
   )
 
   return (
     <Box display="flex" flexDirection="column" margin="0px 4px">
-      <Formik<StateValues> initialValues={stateData} innerRef={formikRef} onSubmit={handleSubmit}>
+      <Formik<StateValues>
+        initialValues={stateData}
+        validationSchema={validationSchema}
+        innerRef={formikRef}
+        onSubmit={handleSubmit}
+      >
         {({ values, submitForm }) => (
           <Box display="flex">
             <Box>
@@ -74,14 +156,16 @@ function StateInfo({ stateData }: Props) {
               <Title>{t('states:expectEquipment')}</Title>
               <EquipmentList type={StateType.Expect} editing={editing} />
             </Box>
-            <Box width="110px">
-              <Title>{t('states:editor')}</Title>
-              <Typography paddingLeft="10px" marginTop="100px">
-                {values.editor}
-              </Typography>
-            </Box>
+            {isCreate ? null : (
+              <Box width="110px">
+                <Title>{t('states:editor')}</Title>
+                <Typography paddingLeft="10px" marginTop="100px">
+                  {values.editor}
+                </Typography>
+              </Box>
+            )}
             <Box display="flex" alignItems="center" justifyContent="center" width="70px">
-              {editing ? (
+              {editing && (
                 <Box>
                   <BaseButton
                     buttonText={t('common:save')}
@@ -90,13 +174,16 @@ function StateInfo({ stateData }: Props) {
                     loading={isLoading}
                     sx={{ width: '40px', marginBottom: '10px' }}
                   />
-                  <BaseButton
-                    buttonText={t('common:cancel')}
-                    onClick={handleCancelClick}
-                    sx={{ width: '40px' }}
-                  />
+                  {isCreate ? null : (
+                    <BaseButton
+                      buttonText={t('common:cancel')}
+                      onClick={handleCancelClick}
+                      sx={{ width: '40px' }}
+                    />
+                  )}
                 </Box>
-              ) : (
+              )}
+              {displayEditButton && (
                 <IconButton
                   disableTouchRipple={true}
                   onClick={handleEditClick}
