@@ -3,7 +3,7 @@ export enum StateType {
   Expect = 'expectState',
 }
 
-interface StateFields {
+export interface StateFields {
   atk?: number
   defense?: number
   health?: number

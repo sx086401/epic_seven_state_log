@@ -33,22 +33,24 @@ export const statesApi = createApi({
         body: decamelizeKeys(body),
       }),
       async onQueryStarted(body, { dispatch, queryFulfilled }) {
-        const { data: newData } = await queryFulfilled
+        try {
+          const { data: newData } = await queryFulfilled
 
-        dispatch(
-          statesApi.util.updateQueryData('getStates', {}, (originData) => {
-            const index = findIndex(originData, { id: body.id })
-            originData.splice(index, 1, camelizeKeys(newData) as StateValues)
-          })
-        )
+          dispatch(
+            statesApi.util.updateQueryData('getStates', {}, (originData) => {
+              const index = findIndex(originData, { id: body.id })
+              originData.splice(index, 1, camelizeKeys(newData) as StateValues)
+            })
+          )
+        } catch {
+          return
+        }
       },
       // invalidatesTags: (result) => [{ type: 'states', id: result?.id }],
     }),
     createState: builder.mutation<StateValues, StateValues>({
       query: (body) => ({ url: 'states', method: 'POST', body: decamelizeKeys(body) }),
       invalidatesTags: (result, error) => {
-        console.log(result)
-        console.log(error)
         if (error) {
           return []
         }

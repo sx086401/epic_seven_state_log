@@ -1,7 +1,9 @@
+import * as yup from 'yup'
 import { BaseButton, useSnackbar } from 'common'
 import { Box, IconButton, Typography, styled } from '@mui/material'
 import { Formik, FormikProps } from 'formik'
-import { StateType, StateValues } from './types'
+import { StateFields, StateType, StateValues } from './types'
+import { includes } from 'lodash'
 import { statesApi } from 'apiClient'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,6 +22,62 @@ interface Props {
   isCreate?: boolean
   onCreate?: (values: StateValues) => void
 }
+
+const StateNumberFields = [
+  'atk',
+  'defense',
+  'health',
+  'spd',
+  'cri',
+  'crd',
+  'eff',
+  'res',
+  'weapon',
+  'helmet',
+  'armor',
+  'necklace',
+  'ring',
+  'boots',
+]
+
+function convertStateFields(raw: StateFields): StateFields {
+  const newEntries = Object.entries(raw).map(([key, value]) =>
+    includes(StateNumberFields, key) && value === '' ? [key, null] : [key, value]
+  )
+
+  return Object.fromEntries(newEntries)
+}
+
+const stateValidationSchema = yup.object({
+  atk: yup.number().min(0).nullable(),
+  defense: yup.number().min(0).nullable(),
+  health: yup.number().min(0).nullable(),
+  spd: yup.number().min(0).nullable(),
+  cri: yup.number().min(0).nullable(),
+  crd: yup.number().min(0).nullable(),
+  eff: yup.number().min(0).nullable(),
+  res: yup.number().min(0).nullable(),
+  weapon: yup.number().min(0).nullable(),
+  helmet: yup.number().min(0).nullable(),
+  armor: yup.number().min(0).nullable(),
+  necklace: yup.number().min(0).nullable(),
+  ring: yup.number().min(0).nullable(),
+  boots: yup.number().min(0).nullable(),
+  weaponSet: yup.string().nullable(),
+  helmetSet: yup.string().nullable(),
+  armorSet: yup.string().nullable(),
+  necklaceSet: yup.string().nullable(),
+  ringSet: yup.string().nullable(),
+  bootsSet: yup.string().nullable(),
+  set1: yup.string().nullable(),
+  set2: yup.string().nullable(),
+  set3: yup.string().nullable(),
+})
+
+const validationSchema = yup.object({
+  [StateType.Current]: stateValidationSchema,
+  [StateType.Expect]: stateValidationSchema,
+})
 
 function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
   const { t } = useTranslation(['states', 'common'])
@@ -40,6 +98,7 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
   useEffect(() => {
     if (isSuccess) {
       setSnackbar({ severity: 'success', message: t('common:updateSucceed') })
+      setEditing(false)
     }
 
     if (isError) {
@@ -48,22 +107,32 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
   }, [isError, isSuccess, result.data, setSnackbar, t])
 
   const handleSubmit = useCallback(
-    (values: StateValues) => {
+    ({ expectState, currentState, ...rest }: StateValues) => {
+      const value = {
+        ...rest,
+        expectState: convertStateFields(expectState),
+        currentState: convertStateFields(currentState),
+      }
+
       if (isCreate && onCreate) {
-        onCreate(values)
+        onCreate(value)
 
         return
       }
 
-      updateState(values)
-      setEditing(false)
+      updateState(value)
     },
     [onCreate, isCreate, updateState]
   )
 
   return (
     <Box display="flex" flexDirection="column" margin="0px 4px">
-      <Formik<StateValues> initialValues={stateData} innerRef={formikRef} onSubmit={handleSubmit}>
+      <Formik<StateValues>
+        initialValues={stateData}
+        validationSchema={validationSchema}
+        innerRef={formikRef}
+        onSubmit={handleSubmit}
+      >
         {({ values, submitForm }) => (
           <Box display="flex">
             <Box>
