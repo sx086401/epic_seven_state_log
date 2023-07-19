@@ -12,14 +12,15 @@ interface Props {
   field: string
   editing?: boolean
   setKey?: string
+  placeholder?: string
 }
 
-function EditableCell({ icon, field, editing, setKey = '' }: Props) {
+function EditableCell({ icon, field, editing, setKey = '', placeholder = '' }: Props) {
   const { getFieldProps, errors } = useFormikContext<StateValues>()
 
   const { value, ...restFieldProps } = useMemo(() => getFieldProps(field), [field, getFieldProps])
 
-  const baseInputSx = useMemo(() => ({ height: '28px', width: setKey ? '50px' : '80px' }), [setKey])
+  const baseInputSx = useMemo(() => ({ height: '28px', width: setKey ? '55px' : '80px' }), [setKey])
 
   const setFieldProps = useMemo(() => getFieldProps(setKey), [getFieldProps, setKey])
 
@@ -39,6 +40,7 @@ function EditableCell({ icon, field, editing, setKey = '' }: Props) {
             sx={baseInputSx}
             value={value ?? ''}
             error={!!get(errors, field)}
+            placeholder={placeholder}
             {...restFieldProps}
           />
         ) : (

@@ -28,6 +28,7 @@ function AddStateModal({ open, onClose }: Props) {
 
   useEffect(() => {
     if (isSuccess) {
+      setSnackbar({ severity: 'success', message: t('createSucceed') })
       setSelectedId(null)
       onClose()
     }
