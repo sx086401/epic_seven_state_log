@@ -3,9 +3,10 @@ import { BaseButton, useSnackbar } from 'common'
 import { Box, IconButton, Typography, styled } from '@mui/material'
 import { Formik, FormikProps } from 'formik'
 import { StateFields, StateType, StateValues } from './types'
+import { getUserToken } from 'app/utils'
 import { includes } from 'lodash'
 import { statesApi } from 'apiClient'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
 import EquipmentList from './EquipmentList'
@@ -83,8 +84,9 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
   const { t } = useTranslation(['states', 'common'])
   const [editing, setEditing] = useState<boolean>(isCreate)
   const formikRef = useRef<FormikProps<StateValues>>(null)
-  const [updateState, result] = statesApi.useUpdateStateMutation()
+  const [updateState, { isSuccess, isError, isLoading }] = statesApi.useUpdateStateMutation()
   const setSnackbar = useSnackbar()
+  const currentUser = getUserToken()
 
   const handleEditClick = useCallback(() => setEditing(true), [])
 
@@ -92,8 +94,6 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
     formikRef.current?.resetForm()
     setEditing(false)
   }, [])
-
-  const { isSuccess, isError, isLoading } = result
 
   useEffect(() => {
     if (isSuccess) {
@@ -104,7 +104,7 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
     if (isError) {
       setSnackbar({ severity: 'error', message: t('common:updateFailed') })
     }
-  }, [isError, isSuccess, result.data, setSnackbar, t])
+  }, [isError, isSuccess, setSnackbar, t])
 
   const handleSubmit = useCallback(
     ({ expectState, currentState, ...rest }: StateValues) => {
@@ -123,6 +123,11 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
       updateState(value)
     },
     [onCreate, isCreate, updateState]
+  )
+
+  const displayEditButton = useMemo(
+    () => currentUser === stateData.editor && !editing,
+    [currentUser, editing, stateData.editor]
   )
 
   return (
@@ -160,7 +165,7 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
               </Box>
             )}
             <Box display="flex" alignItems="center" justifyContent="center" width="70px">
-              {editing ? (
+              {editing && (
                 <Box>
                   <BaseButton
                     buttonText={t('common:save')}
@@ -177,7 +182,8 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
                     />
                   )}
                 </Box>
-              ) : (
+              )}
+              {displayEditButton && (
                 <IconButton
                   disableTouchRipple={true}
                   onClick={handleEditClick}
