@@ -1,5 +1,9 @@
+export interface LoginInfo {
+  username: string
+  password: string
+}
+
 export interface AuthContextType {
-  username?: string
   login: (username: string) => void
   logout: () => void
 }

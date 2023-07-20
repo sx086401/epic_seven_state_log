@@ -1,4 +1,5 @@
 import { Character, StateValues } from 'features/states/types'
+import { LoginInfo } from 'app/types'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { findIndex } from 'lodash'
@@ -79,6 +80,17 @@ export const characterApi = createApi({
     getCharacters: builder.query<Character[], any>({
       query: () => `characters`,
       transformResponse: (resp: any[]) => resp.map((data) => camelizeKeys(data) as Character),
+    }),
+  }),
+})
+
+export const userApi = createApi({
+  reducerPath: 'user',
+  tagTypes: ['user'],
+  baseQuery: fetchBaseQuery({ baseUrl: `http://${API_URL}/api/` }),
+  endpoints: (builder) => ({
+    login: builder.mutation<{ message: string; username: string }, LoginInfo>({
+      query: (body) => ({ url: 'login', method: 'POST', body }),
     }),
   }),
 })

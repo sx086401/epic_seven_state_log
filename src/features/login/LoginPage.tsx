@@ -1,11 +1,12 @@
 import * as Yup from 'yup'
 import { BaseInput } from 'common'
-import { Box, Typography, styled } from '@mui/material'
+import { Box, FormLabel, Typography, styled } from '@mui/material'
 import { pathName } from 'constant'
+import { useEffect, useMemo } from 'react'
 import { useFormik } from 'formik'
-import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { userApi } from 'apiClient'
 import BackgroundImage from 'assets/Briar-Witch-Iseria-portrait.png'
 import BaseButton from 'common/BaseButton'
 import useAuth from 'app/useAuth'
@@ -29,12 +30,23 @@ const StyledCenter = styled(Box)({
   '& .MuiInputBase-root, .MuiButtonBase-root': {
     marginTop: '30px',
   },
+  '& .MuiFormLabel-root': {
+    marginTop: '5px',
+  },
 })
 
 function LoginPage() {
   const { t } = useTranslation(['app', 'errors'])
   const navigate = useNavigate()
   const { login } = useAuth()
+  const [callLoginApi, { isSuccess, isError, data }] = userApi.useLoginMutation()
+
+  useEffect(() => {
+    if (isSuccess && data?.username) {
+      login(data?.username)
+      navigate(pathName.states)
+    }
+  }, [data, isSuccess, login, navigate])
 
   const validationSchema = useMemo(
     () =>
@@ -48,9 +60,8 @@ function LoginPage() {
   const { errors, touched, getFieldProps, submitForm } = useFormik<FormValues>({
     initialValues: { username: '', password: '' },
     validationSchema,
-    onSubmit: ({ username }) => {
-      login(username)
-      navigate(pathName.states)
+    onSubmit: (values) => {
+      callLoginApi(values)
     },
   })
 
@@ -81,6 +92,7 @@ function LoginPage() {
           error={!!errors.password && touched.password}
           {...getFieldProps('password')}
         />
+        {isError && <FormLabel error={true}>{t('app:login.error')}</FormLabel>}
         <BaseButton buttonText={t('app:login.login')} onClick={submitForm} />
       </StyledCenter>
     </Box>
