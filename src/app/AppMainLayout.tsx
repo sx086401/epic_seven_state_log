@@ -10,7 +10,7 @@ const StyledBox = styled(Box)({
   height: '100%',
   boxSizing: 'border-box',
   paddingTop: size.navbarHeight,
-  overflow: 'scroll',
+  overflowY: 'scroll',
 })
 
 function AppMainLayout() {

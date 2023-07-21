@@ -2,9 +2,10 @@ import { AppBar, Toolbar, ToolbarProps, styled } from '@mui/material'
 import { ReactNode } from 'react'
 
 const StyledAppBar = styled(AppBar)({
-  backgroundColor: 'transparent',
+  backgroundColor: 'rgb(15, 15, 15)',
   backgroundImage: 'none',
   boxShadow: 'none',
+  alignItems: 'center',
 })
 
 interface Props {

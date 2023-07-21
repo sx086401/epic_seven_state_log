@@ -64,7 +64,7 @@ function StatesPage() {
         onSearchKeyUp={handleSearchKeyUp}
         onAddClick={handleModalOpen}
       />
-      <BasePageCenter overflow="scroll" height="600px">
+      <BasePageCenter>
         {!isFetching && states ? (
           <Box>
             {states.map((state) => (
