@@ -19,7 +19,7 @@ export const statesApi = createApi({
   reducerPath: 'state',
   refetchOnMountOrArgChange: true,
   tagTypes: ['states'],
-  baseQuery: fetchBaseQuery({ baseUrl: `http://${API_URL}/api/` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `https://${API_URL}/api/` }),
   endpoints: (builder) => ({
     getStates: builder.query<StateValues[], object>({
       query: (params) => `states${objToQueryStr(params)}`,
@@ -75,7 +75,7 @@ export const statesApi = createApi({
 export const characterApi = createApi({
   reducerPath: 'character',
   tagTypes: ['characters'],
-  baseQuery: fetchBaseQuery({ baseUrl: `http://${API_URL}/api/` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `https://${API_URL}/api/` }),
   endpoints: (builder) => ({
     getCharacters: builder.query<Character[], any>({
       query: () => `characters`,
@@ -87,7 +87,7 @@ export const characterApi = createApi({
 export const userApi = createApi({
   reducerPath: 'user',
   tagTypes: ['user'],
-  baseQuery: fetchBaseQuery({ baseUrl: `http://${API_URL}/api/` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `https://${API_URL}/api/` }),
   endpoints: (builder) => ({
     login: builder.mutation<{ message: string; username: string }, LoginInfo>({
       query: (body) => ({ url: 'login', method: 'POST', body }),
