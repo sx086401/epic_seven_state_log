@@ -39,7 +39,7 @@ function LoginPage() {
   const { t } = useTranslation(['app', 'errors'])
   const navigate = useNavigate()
   const { login } = useAuth()
-  const [callLoginApi, { isSuccess, isError, data }] = userApi.useLoginMutation()
+  const [callLoginApi, { isSuccess, isError, data, isLoading }] = userApi.useLoginMutation()
 
   useEffect(() => {
     if (isSuccess && data?.username) {
@@ -93,7 +93,7 @@ function LoginPage() {
           {...getFieldProps('password')}
         />
         {isError && <FormLabel error={true}>{t('app:login.error')}</FormLabel>}
-        <BaseButton buttonText={t('app:login.login')} onClick={submitForm} />
+        <BaseButton buttonText={t('app:login.login')} onClick={submitForm} loading={isLoading} />
       </StyledCenter>
     </Box>
   )

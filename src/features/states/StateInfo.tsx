@@ -21,6 +21,7 @@ const Title = styled(Typography)({
 interface Props {
   stateData: StateValues
   isCreate?: boolean
+  isCreating?: boolean
   onCreate?: (values: StateValues) => void
 }
 
@@ -80,7 +81,7 @@ const validationSchema = yup.object({
   [StateType.Expect]: stateValidationSchema,
 })
 
-function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
+function StateInfo({ stateData, isCreate = false, isCreating = false, onCreate }: Props) {
   const { t } = useTranslation(['states', 'common'])
   const [editing, setEditing] = useState<boolean>(isCreate)
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
@@ -192,7 +193,7 @@ function StateInfo({ stateData, isCreate = false, onCreate }: Props) {
                     buttonText={t('common:save')}
                     type="submit"
                     onClick={submitForm}
-                    loading={isLoading}
+                    loading={isLoading || isCreating}
                   />
                   {isCreate ? null : (
                     <>

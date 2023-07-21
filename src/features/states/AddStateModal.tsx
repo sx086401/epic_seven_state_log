@@ -22,7 +22,7 @@ interface Props {
 function AddStateModal({ open, onClose }: Props) {
   const { t } = useTranslation()
   const { data: characters } = characterApi.useGetCharactersQuery({})
-  const [createState, { isSuccess, isError }] = statesApi.useCreateStateMutation()
+  const [createState, { isSuccess, isError, isLoading }] = statesApi.useCreateStateMutation()
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const setSnackbar = useSnackbar()
 
@@ -73,7 +73,12 @@ function AddStateModal({ open, onClose }: Props) {
       PaperProps={{ sx: { width: '900px', maxWidth: 1000 } }}
     >
       {selectedId ? (
-        <CharInfo stateData={defaultValue} isCreate={true} onCreate={handleCreate} />
+        <CharInfo
+          stateData={defaultValue}
+          isCreate={true}
+          isCreating={isLoading}
+          onCreate={handleCreate}
+        />
       ) : (
         <CharacterSelectTable onCharacterClick={handleCharacterClick} />
       )}
