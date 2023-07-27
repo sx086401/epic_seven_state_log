@@ -56,6 +56,7 @@ function CharacterSelectTable({ onCharacterClick }: Props) {
         searchElement={element}
         searchRole={role}
         searchRank={rank}
+        isTransparent={true}
         onElementClick={handleElementClick}
         onRoleClick={handleRoleClick}
         onRankClick={handleRankClick}
@@ -65,8 +66,8 @@ function CharacterSelectTable({ onCharacterClick }: Props) {
         alignContent="flex-start"
         height="400px"
         flexWrap="wrap"
-        overflow="scroll"
         paddingLeft="15px"
+        sx={{ overflowY: 'scroll' }}
       >
         {displayCharacter?.map(({ id, imageUrl }) => (
           <IconButton

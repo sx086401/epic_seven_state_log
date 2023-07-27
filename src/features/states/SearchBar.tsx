@@ -54,6 +54,7 @@ interface Props {
   searchElement: string
   searchRole: string
   searchRank: string
+  isTransparent?: boolean
   onElementClick: (e: MouseEvent<HTMLButtonElement>) => void
   onRoleClick: (e: MouseEvent<HTMLButtonElement>) => void
   onRankClick: (e: MouseEvent<HTMLButtonElement>) => void
@@ -65,6 +66,7 @@ function SearchBar({
   searchElement,
   searchRole,
   searchRank,
+  isTransparent = false,
   onElementClick,
   onRoleClick,
   onRankClick,
@@ -74,7 +76,7 @@ function SearchBar({
   const { t } = useTranslation('common')
 
   return (
-    <BaseStickyBar>
+    <BaseStickyBar isTransparent={isTransparent}>
       <Box display="flex" marginRight="30px">
         <SearchIconButton
           name=""
