@@ -8,7 +8,7 @@ import { useFormikContext } from 'formik'
 import SetSelect from './SetSelect'
 
 interface Props {
-  icon: ReactNode
+  icon?: ReactNode
   field: string
   editing?: boolean
   setKey?: string

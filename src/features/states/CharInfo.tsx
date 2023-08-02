@@ -7,7 +7,7 @@ const StyledCard = styled(Card, { shouldForwardProp: (prop) => prop !== 'isCreat
     display: 'flex',
     justifyContent: 'space-around',
     padding: '10px 20px',
-    width: isCreate ? '850px' : '950px',
+    width: isCreate ? '100px' : '1100px',
     height: '320px',
     marginBottom: '10px',
   })

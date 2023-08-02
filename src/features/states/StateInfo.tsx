@@ -8,6 +8,7 @@ import { includes } from 'lodash'
 import { statesApi } from 'apiClient'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import ArtifactList from './ArtifactList'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
 import EquipmentList from './EquipmentList'
 import StateList from './StateList'
@@ -177,6 +178,10 @@ function StateInfo({ stateData, isCreate = false, isCreating = false, onCreate }
             <Box>
               <Title>{t('states:expectEquipment')}</Title>
               <EquipmentList type={StateType.Expect} editing={editing} />
+            </Box>
+            <Box>
+              <Title>{t('states:artifact')}</Title>
+              <ArtifactList editing={editing} />
             </Box>
             {isCreate ? null : (
               <Box width="110px">
