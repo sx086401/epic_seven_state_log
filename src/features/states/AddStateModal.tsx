@@ -70,7 +70,7 @@ function AddStateModal({ open, onClose }: Props) {
       open={open}
       dialogTitle={t('addState')}
       onClose={handleClose}
-      PaperProps={{ sx: { width: '900px', maxWidth: 1000 } }}
+      PaperProps={{ sx: { width: '1050px', maxWidth: 1100 } }}
     >
       {selectedId ? (
         <CharInfo
