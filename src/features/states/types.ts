@@ -45,4 +45,8 @@ export interface StateValues {
   characterId: number
   character: Character
   editor: string
+  artifact1?: string
+  artifact2?: string
+  artifact3?: string
+  exclusiveEquipment?: string
 }

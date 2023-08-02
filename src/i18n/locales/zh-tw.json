@@ -36,7 +36,9 @@
     "currentEquipment": "當前裝備分數",
     "expectEquipment": "期望裝備分數",
     "editor": "作者",
-    "addState": "新增面板"
+    "addState": "新增面板",
+    "artifact": "神器",
+    "exclusiveEquipment": "專屬裝備"
   },
   "errors": {
     "required": "必填欄位"
