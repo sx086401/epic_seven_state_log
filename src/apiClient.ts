@@ -1,10 +1,16 @@
 import { Character, StateValues } from 'features/states/types'
 import { LoginInfo } from 'app/types'
+import { StateListResponse } from 'types'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { findIndex } from 'lodash'
 
 const API_URL = `https://${process.env.REACT_APP_API_URL}`
+
+interface StatesState {
+  count: number
+  states: StateValues[]
+}
 
 const objToQueryStr = (params?: object) =>
   params
@@ -21,11 +27,13 @@ export const statesApi = createApi({
   tagTypes: ['states'],
   baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}/api/` }),
   endpoints: (builder) => ({
-    getStates: builder.query<StateValues[], object>({
+    getStates: builder.query<StatesState, object>({
       query: (params) => `states${objToQueryStr(params)}`,
-      transformResponse: (resp: any[]): StateValues[] =>
-        resp.map((data) => camelizeKeys(data) as StateValues),
-      providesTags: (result = []) => result?.map((state) => ({ type: 'states', id: state.id })),
+      transformResponse: ({ count, results }: StateListResponse): StatesState => {
+        return { count, states: results.map((data) => camelizeKeys(data) as StateValues) ?? [] }
+      },
+      providesTags: (state = { count: 0, states: [] }) =>
+        state.states?.map((state) => ({ type: 'states', id: state.id })),
     }),
     updateState: builder.mutation<StateValues, Partial<StateValues>>({
       query: (body) => ({
@@ -38,7 +46,7 @@ export const statesApi = createApi({
           const { data: newData } = await queryFulfilled
 
           dispatch(
-            statesApi.util.updateQueryData('getStates', {}, (originData) => {
+            statesApi.util.updateQueryData('getStates', {}, ({ states: originData }) => {
               const index = findIndex(originData, { id: body.id })
               originData.splice(index, 1, camelizeKeys(newData) as StateValues)
             })

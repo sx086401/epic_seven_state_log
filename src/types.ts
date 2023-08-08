@@ -33,3 +33,10 @@ export enum EquipmentSet {
   Tor = 'tor',
   Uni = 'uni',
 }
+
+export interface StateListResponse {
+  count: number
+  next?: string
+  previous?: string
+  results: any[]
+}
