@@ -39,7 +39,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start:e2e": "env-cmd -f .env.e2e yarn start",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -63,6 +65,8 @@
     "@types/lodash": "^4.14.195",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
+    "cypress": "^12.17.4",
+    "env-cmd": "^10.1.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
